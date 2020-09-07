@@ -34,12 +34,12 @@ public class FinVizInitialDataCompanyDataService extends AbstractFinVizDataServi
     @Transactional
     @Override
     public void initializeAllCompanies() throws IOException {
-        int startPageNumber = 1;
-        int endPageNumber = 7521;
-        int stepPageNumber = 20;
+        int startPage = 1;
+        int endPage = 7521;
+        int stepPage = 20;
 
-        for (int currentPageNumber = startPageNumber; currentPageNumber <= endPageNumber; currentPageNumber += stepPageNumber) {
-            initializeDataForParse(String.valueOf(currentPageNumber));
+        for (int currentPage = startPage; currentPage <= endPage; currentPage += stepPage) {
+            initializeDataForParse(String.valueOf(currentPage));
 
             removeRowFromTableWithHeaders();
 
