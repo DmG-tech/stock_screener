@@ -7,7 +7,7 @@ import static dmg.stock_screener.util.DateUtil.getCurrentDate;
 
 public class TestDataIndicator {
 
-    public static final Company COMPANY_CORRECT = new Company(1, "Corporation of Evil", "IT", "COE", Collections.EMPTY_SET);
+    public static final Company COMPANY_CORRECT = new Company(1, "Corporation of Evil", "IT", "COE", Collections.EMPTY_MAP);
 
     public static final Indicator INDICATOR_CORRECT = new Indicator(10, getCurrentDate(), "P/E", 30.1, "$");
 
