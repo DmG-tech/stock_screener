@@ -18,7 +18,7 @@ public class TestData {
     public static final String ORIGIN_STRING_WITH_SIMPLE_NUMBER = "2290";
     public static final String ORIGIN_STRING_WITH_WORD = "Yes";
     public static final String ORIGIN_STRING_WITH_NEGATIVE_NUMBER = "-3.52%";
-    public static final String ORIGIN_STRING_WITH_NUMBER_WITH_COMMA = "127,991";
+    public static final String ORIGIN_STRING_WITH_NUMBER_WITH_COMMA = "127,991,11";
     public static final String ORIGIN_STRING_WITH_TWO_NUMBERS = "2.46% 2.36%";
     public static final String ORIGIN_STRING_WITH_DATE = "Aug 06 AMC";
 
@@ -34,7 +34,7 @@ public class TestData {
     public static Double RESULT_NUMBER_PERCENT = 0.67;
     public static Double RESULT_NUMBER_SIMPLE_NUMBER = 2290.00;
     public static Double RESULT_NUMBER_NEGATIVE_NUMBER = -3.52;
-    public static Double RESULT_NUMBER_WITH_COMMA = 127.99;
+    public static Double RESULT_NUMBER_WITH_COMMA = 12799111.00;
     public static Double RESULT_WITH_TWO_NUMBERS = 2.46;
 
     public static Indicator getNewIndicator() {
