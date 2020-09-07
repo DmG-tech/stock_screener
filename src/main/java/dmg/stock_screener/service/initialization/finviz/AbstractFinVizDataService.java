@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import static dmg.stock_screener.util.ValidationUtil.*;
@@ -76,9 +77,11 @@ public abstract class AbstractFinVizDataService {
 
     protected void initializeCellsFromRows(List<Element> rows) {
         checkNull(rows, "row  of company list");
+        List<Element> cells = new LinkedList<>();
 
         for (Element row : rows) {
             cells.addAll(row.getElementsByTag("td"));
         }
+        this.cells = cells;
     }
 }
