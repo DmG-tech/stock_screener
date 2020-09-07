@@ -22,4 +22,6 @@ public interface CompanyRepo {
 
     List<Company> getAllWithIndicator();
 
+    List<Company> getByIndustryWithIndicator(String industry);
+
 }

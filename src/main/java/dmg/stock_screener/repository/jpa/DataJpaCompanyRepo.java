@@ -59,6 +59,11 @@ public class DataJpaCompanyRepo implements CompanyRepo {
         return sorted(companyRepo.getAllWithIndicator());
     }
 
+    @Override
+    public List<Company> getByIndustryWithIndicator(String industry) {
+        return sorted(companyRepo.getByIndustryWithIndicator(industry));
+    }
+
     private List<Company> sorted(List<Company> companies) {
         return companies
                 .stream()

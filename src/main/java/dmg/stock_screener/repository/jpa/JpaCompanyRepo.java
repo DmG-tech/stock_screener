@@ -29,4 +29,8 @@ public interface JpaCompanyRepo extends JpaRepository<Company, Integer> {
     @Query("SELECT c FROM Company c")
     List<Company> getAllWithIndicator();
 
+    @EntityGraph(attributePaths = {"indicators"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT c FROM Company c WHERE c.industry=:industry")
+    List<Company> getByIndustryWithIndicator(@Param("industry") String industry);
+
 }
