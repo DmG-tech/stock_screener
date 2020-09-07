@@ -3,8 +3,7 @@ package dmg.stock_screener.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "companies")
@@ -20,7 +19,7 @@ public class Company extends AbstractNamedEntity {
 
     @NotNull
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
-    private Set<Indicator> indicators;
+    private Map<String, Indicator> indicators;
 
     public Company() {
     }
@@ -33,11 +32,11 @@ public class Company extends AbstractNamedEntity {
         this(id, name, industry, ticker, null);
     }
 
-    public Company(String name, String industry, String ticker, Set<Indicator> indicators) {
+    public Company(String name, String industry, String ticker, Map<String, Indicator> indicators) {
         this(null, name, industry, ticker, indicators);
     }
 
-    public Company(Integer id, String name, String industry, String ticker, Set<Indicator> indicators) {
+    public Company(Integer id, String name, String industry, String ticker, Map<String, Indicator> indicators) {
         super(id, name);
         this.industry = industry;
         this.ticker = ticker;
@@ -60,12 +59,23 @@ public class Company extends AbstractNamedEntity {
         this.ticker = ticker;
     }
 
-    public Set<Indicator> getIndicators() {
+    public Map<String, Indicator> getIndicators() {
         return indicators;
     }
 
-    public void setIndicators(Set<Indicator> indicators) {
-        this.indicators = indicators == null ? Collections.EMPTY_SET : Collections.EMPTY_SET;
+    public void setIndicators(Map<String, Indicator> indicators) {
+        this.indicators = indicators == null ? Collections.EMPTY_MAP : indicators;
+    }
+
+    public void setIndicators(Collection<Indicator> indicators) {
+        if (indicators == null) {
+            this.indicators = Collections.EMPTY_MAP;
+        }
+        else {
+            Map<String, Indicator> map = new HashMap<>();
+            indicators.forEach(indicator -> map.putIfAbsent(indicator.getName(), indicator));
+            this.indicators = map;
+        }
     }
 
     @Override
