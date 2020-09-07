@@ -43,7 +43,7 @@ public class IndicatorUtil {
     }
 
     private static String fixDecimalSeparator(String value) {
-        return value.replace(",", ".");
+        return value.replaceAll(",", ".");
     }
 
     private static double convert(String number) {
