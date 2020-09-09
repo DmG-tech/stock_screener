@@ -13,7 +13,7 @@ import java.util.List;
 
 import static dmg.stock_screener.util.ValidationUtil.*;
 
-public abstract class AbstractFinVizDataService {
+public abstract class AbstractPageParser {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -29,11 +29,8 @@ public abstract class AbstractFinVizDataService {
 
     private List<Element> cells;
 
-    protected void setTemplateUrl(String templateUrl) {
+    public AbstractPageParser(String templateUrl, String tablePath) {
         this.templateUrl = templateUrl;
-    }
-
-    protected void setTablePath(String tablePath) {
         this.tablePath = tablePath;
     }
 
@@ -53,7 +50,7 @@ public abstract class AbstractFinVizDataService {
         return cells;
     }
 
-    protected abstract void initializeDataForParse(String urlParameter) throws IOException;
+    protected abstract void parseDataByCustomStep(String urlParameter) throws IOException;
 
     protected void initializePage(String urlParameter) throws IOException {
         String url = String.format(templateUrl, urlParameter);

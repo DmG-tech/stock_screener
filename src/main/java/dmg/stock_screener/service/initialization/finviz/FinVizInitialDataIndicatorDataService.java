@@ -2,7 +2,7 @@ package dmg.stock_screener.service.initialization.finviz;
 
 import dmg.stock_screener.entities.Company;
 import dmg.stock_screener.entities.Indicator;
-import dmg.stock_screener.repository.IndicatorRepo;
+import dmg.stock_screener.repository.IndicatorRepository;
 import dmg.stock_screener.service.initialization.InitialDataIndicator;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
@@ -20,18 +20,20 @@ import static dmg.stock_screener.util.IndicatorUtil.setValueAndUnit;
 import static dmg.stock_screener.util.IndicatorUtil.isCorrectData;
 
 @Component
-public class FinVizInitialDataIndicatorDataService extends AbstractFinVizDataService implements InitialDataIndicator {
+public class FinVizInitialDataIndicatorDataService extends AbstractPageParser implements InitialDataIndicator {
+
+    private static final String TEMPLATE_URL = "https://finviz.com/quote.ashx?t=%s";
+
+    private static final String TABLE_PATH = "[class = snapshot-table2]";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final IndicatorRepo indicatorRepo;
+    private final IndicatorRepository indicatorRepository;
 
     @Autowired
-    public FinVizInitialDataIndicatorDataService(IndicatorRepo indicatorRepo) {
-        this.indicatorRepo = indicatorRepo;
-
-        setTemplateUrl("https://finviz.com/quote.ashx?t=%s");
-        setTablePath("[class = snapshot-table2]");
+    public FinVizInitialDataIndicatorDataService(IndicatorRepository indicatorRepository) {
+        super(TEMPLATE_URL, TABLE_PATH);
+        this.indicatorRepository = indicatorRepository;
     }
 
     @Transactional
@@ -40,19 +42,21 @@ public class FinVizInitialDataIndicatorDataService extends AbstractFinVizDataSer
 
         for (Company company : companies) {
 
-            initializeDataForParse(company.getTicker());
+            String ticker = company.getTicker();
+            parseDataByCustomStep(ticker);
 
             List<Indicator> indicators = createIndicatorsForCompany();
 
             for (Indicator indicator : indicators) {
-                indicatorRepo.save(indicator, company.getId());
+                int company_id = company.getId();
+                indicatorRepository.save(indicator, company_id);
             }
             log.info("add indicator for ticker: {}", company.getTicker());
         }
     }
 
     @Override
-    protected void initializeDataForParse(String urlParameter) throws IOException {
+    protected void parseDataByCustomStep(String urlParameter) throws IOException {
         initializePage(urlParameter);
         initializeTableFromPage();
         initializeRowsFromTable();
@@ -88,5 +92,14 @@ public class FinVizInitialDataIndicatorDataService extends AbstractFinVizDataSer
         indicator.setName(name);
         indicator.setDate(getCurrentDate());
         setValueAndUnit(indicator, value);
+
+        if ("EPS next Y".equals(name)) {
+            if ("%".equals(indicator.getUnit())) {
+                indicator.setName("EPS growth next Y");
+
+            } else {
+                indicator.setName("EPS estimate next Y");
+            }
+        }
     }
 }

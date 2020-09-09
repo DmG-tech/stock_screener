@@ -76,9 +76,9 @@ public class Indicator extends AbstractNamedEntity {
     @Override
     public String toString() {
         return "Indicator{" +
-                ", id=" + id + '\'' +
+                "id=" + id + '\'' +
                 ", name='" + name + '\'' +
-                "value=" + value + '\'' +
+                ", value=" + value + '\'' +
                 ", unit='" + unit + '\'' +
                 ", date=" + date + '\'' +
                 ", company=" + company + '\'' +

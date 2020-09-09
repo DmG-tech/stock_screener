@@ -4,7 +4,7 @@ import dmg.stock_screener.entities.Company;
 
 import java.util.List;
 
-public interface CompanyRepo {
+public interface CompanyRepository {
 
     Company save(Company company);
 

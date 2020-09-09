@@ -2,7 +2,7 @@ package dmg.stock_screener.repository;
 
 import dmg.stock_screener.entities.Indicator;
 
-public interface IndicatorRepo {
+public interface IndicatorRepository {
 
     Indicator save(Indicator indicator, int com_id);
 

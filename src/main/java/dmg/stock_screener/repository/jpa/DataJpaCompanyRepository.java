@@ -1,7 +1,7 @@
 package dmg.stock_screener.repository.jpa;
 
 import dmg.stock_screener.entities.Company;
-import dmg.stock_screener.repository.CompanyRepo;
+import dmg.stock_screener.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -10,58 +10,58 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class DataJpaCompanyRepo implements CompanyRepo {
+public class DataJpaCompanyRepository implements CompanyRepository {
 
-    private JpaCompanyRepo companyRepo;
+    private JpaCompanyRepository companyRepository;
 
     @Autowired
-    public DataJpaCompanyRepo(JpaCompanyRepo companyRepo) {
-        this.companyRepo = companyRepo;
+    public DataJpaCompanyRepository(JpaCompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
     }
 
     @Override
     public Company save(Company company) {
-        return companyRepo.save(company);
+        return companyRepository.save(company);
     }
 
     @Override
     public boolean delete(int id) {
-        return companyRepo.delete(id) != 0;
+        return companyRepository.delete(id) != 0;
     }
 
     @Override
     public Company get(int id) {
-        return companyRepo.getOne(id);
+        return companyRepository.getOne(id);
     }
 
     @Override
     public Company getByTicker(String ticker) {
-        return companyRepo.getByTicker(ticker);
+        return companyRepository.getByTicker(ticker);
     }
 
     @Override
     public Company getWithIndicator(int id) {
-        return companyRepo.getWithIndicator(id);
+        return companyRepository.getWithIndicator(id);
     }
 
     @Override
     public List<Company> getByIndustry(String industry) {
-        return sorted(companyRepo.getByIndustry(industry));
+        return sorted(companyRepository.getByIndustry(industry));
     }
 
     @Override
     public List<Company> getAll() {
-        return sorted(companyRepo.findAll());
+        return sorted(companyRepository.findAll());
     }
 
     @Override
     public List<Company> getAllWithIndicator() {
-        return sorted(companyRepo.getAllWithIndicator());
+        return sorted(companyRepository.getAllWithIndicator());
     }
 
     @Override
     public List<Company> getByIndustryWithIndicator(String industry) {
-        return sorted(companyRepo.getByIndustryWithIndicator(industry));
+        return sorted(companyRepository.getByIndustryWithIndicator(industry));
     }
 
     private List<Company> sorted(List<Company> companies) {

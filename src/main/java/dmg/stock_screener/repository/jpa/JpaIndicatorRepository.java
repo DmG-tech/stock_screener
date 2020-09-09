@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
-public interface JpaIndicatorRepo extends JpaRepository<Indicator, Integer> {
+public interface JpaIndicatorRepository extends JpaRepository<Indicator, Integer> {
 
     @Query("DELETE FROM Indicator i WHERE i.id=:id AND i.company.id=:com_id")
     int delete(@Param("id") int id, @Param("com_id") int com_id);

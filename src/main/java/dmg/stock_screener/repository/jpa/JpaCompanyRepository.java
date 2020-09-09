@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional(readOnly = true)
-public interface JpaCompanyRepo extends JpaRepository<Company, Integer> {
+public interface JpaCompanyRepository extends JpaRepository<Company, Integer> {
 
     @Query("DELETE FROM Company c where c.id=:id")
     int delete(@Param("id") int id);
