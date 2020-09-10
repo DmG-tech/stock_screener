@@ -1,23 +1,21 @@
 package dmg.stock_screener.service.initialization.finviz;
 
 import dmg.stock_screener.entities.Company;
-import dmg.stock_screener.repository.CompanyRepository;
-import dmg.stock_screener.service.initialization.InitialDataCompany;
-import dmg.stock_screener.util.CompanyUtil;
+import dmg.stock_screener.service.initialization.CompanyParser;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import static dmg.stock_screener.util.ValidationUtil.checkNull;
 
 @Component
-public class FinVizInitialDataCompanyDataService extends AbstractPageParser implements InitialDataCompany {
+public class FinVizCompanyParser extends AbstractPageParser implements CompanyParser {
 
     private static final String TEMPLATE_URL = "https://finviz.com/screener.ashx?r=%s";
 
@@ -25,21 +23,19 @@ public class FinVizInitialDataCompanyDataService extends AbstractPageParser impl
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final CompanyRepository companyRepository;
-
     @Autowired
-    public FinVizInitialDataCompanyDataService(CompanyRepository companyRepository) {
+    public FinVizCompanyParser() {
         super(TEMPLATE_URL, TABLE_PATH);
-        this.companyRepository = companyRepository;
     }
 
-    @Transactional
+
     @Override
-    public void initializeAllCompanies() throws IOException {
+    public List<Company> parseAllCompanies() throws IOException {
         int startPage = 1;
         int endPage = 7521;
         int stepPage = 20;
 
+        List<Company> companies = new LinkedList<>();
         for (int currentPage = startPage; currentPage <= endPage; currentPage += stepPage) {
             parseDataByCustomStep(String.valueOf(currentPage));
 
@@ -48,12 +44,11 @@ public class FinVizInitialDataCompanyDataService extends AbstractPageParser impl
             for (Element row : getRows()) {
                 initializeCellsFromRows(List.of(row));
                 Company company = createCompany();
-                if (CompanyUtil.isCorrectData(company)) {
-                    companyRepository.save(company);
-                }
-                log.info("create company: {}", company);
+                companies.add(company);
+                log.info("parse company : {}", company.getTicker());
             }
         }
+        return companies;
     }
 
     @Override

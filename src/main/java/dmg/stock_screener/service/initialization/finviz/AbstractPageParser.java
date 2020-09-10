@@ -17,9 +17,9 @@ public abstract class AbstractPageParser {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private String templateUrl;
+    private final String templateUrl;
 
-    private String tablePath;
+    private final String tablePath;
 
     private Document page;
 
@@ -61,13 +61,11 @@ public abstract class AbstractPageParser {
 
     protected void initializeTableFromPage() throws IllegalArgumentException {
         checkNull(page, "page of company list");
-
         table = page.selectFirst(tablePath);
     }
 
     protected void initializeRowsFromTable() throws IllegalArgumentException {
         checkNull(table, "table of company list");
-
         String tag = "tr";
         rows = table.getElementsByTag(tag);
     }
@@ -81,4 +79,5 @@ public abstract class AbstractPageParser {
         }
         this.cells = cells;
     }
+
 }
