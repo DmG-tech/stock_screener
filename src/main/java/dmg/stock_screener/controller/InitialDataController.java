@@ -1,7 +1,7 @@
 package dmg.stock_screener.controller;
 
 import dmg.stock_screener.entities.Company;
-import dmg.stock_screener.repository.CompanyRepo;
+import dmg.stock_screener.repository.CompanyRepository;
 import dmg.stock_screener.service.initialization.InitialDataCompany;
 import dmg.stock_screener.service.initialization.InitialDataIndicator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,27 +14,24 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = {"/", "index"})
-public class CompanyController {
+public class InitialDataController {
 
-    private InitialDataCompany initialDataCompany;
-
-    private InitialDataIndicator initialDataIndicator;
-
-    @Autowired
-    private CompanyRepo companyRepo;
+    private final InitialDataCompany initialDataCompany;
+    private final InitialDataIndicator initialDataIndicator;
+    private final CompanyRepository companyRepository;
 
     @Autowired
-    public CompanyController(InitialDataCompany initialDataCompany, InitialDataIndicator initialDataIndicator) {
+    public InitialDataController(InitialDataCompany initialDataCompany, InitialDataIndicator initialDataIndicator, CompanyRepository companyRepository) {
         this.initialDataCompany = initialDataCompany;
         this.initialDataIndicator = initialDataIndicator;
+        this.companyRepository = companyRepository;
     }
 
     @GetMapping
     public String get() throws IOException {
+        initialDataCompany.initializeAllCompanies();
 
-        //initialDataCompany.initAllCompany();
-
-        List<Company> companies = companyRepo.getAll();
+        List<Company> companies = companyRepository.getAll();
         initialDataIndicator.initializeIndicatorForAllCompanies(companies);
         return "ok";
     }
