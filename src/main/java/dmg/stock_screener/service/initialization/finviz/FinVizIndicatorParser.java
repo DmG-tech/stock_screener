@@ -6,6 +6,8 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,17 +18,14 @@ import static dmg.stock_screener.util.DateUtil.getCurrentDate;
 import static dmg.stock_screener.util.IndicatorUtil.setValueAndUnit;
 
 @Component
+@PropertySource("classpath:config/fin_viz_config.properties")
 public class FinVizIndicatorParser extends AbstractPageParser implements IndicatorParser {
-
-    private static final String TEMPLATE_URL = "https://finviz.com/quote.ashx?t=%s";
-
-    private static final String TABLE_PATH = "[class = snapshot-table2]";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public FinVizIndicatorParser() {
-        super(TEMPLATE_URL, TABLE_PATH);
+    public FinVizIndicatorParser(@Value("${template_url_for_indicator}") String templateUrl, @Value("${path_to_table_for_indicator}") String tablePath) {
+        super(templateUrl, tablePath);
     }
 
     @Override

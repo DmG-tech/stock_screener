@@ -6,6 +6,8 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -15,25 +17,27 @@ import java.util.List;
 import static dmg.stock_screener.util.ValidationUtil.checkNull;
 
 @Component
+@PropertySource("classpath:config/fin_viz_config.properties")
 public class FinVizCompanyParser extends AbstractPageParser implements CompanyParser {
-
-    private static final String TEMPLATE_URL = "https://finviz.com/screener.ashx?r=%s";
-
-    private static final String TABLE_PATH = "#screener-content > table > tbody > tr:nth-of-type(4) > td > table";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    public FinVizCompanyParser() {
-        super(TEMPLATE_URL, TABLE_PATH);
-    }
+    @Value("${start_page}")
+    private int startPage;
 
+    @Value("${end_page}")
+    private int endPage;
+
+    @Value("${step_page}")
+    private int stepPage;
+
+    @Autowired
+    public FinVizCompanyParser(@Value("${template_url_for_company}") String templateUrl,  @Value("${path_to_table_for_company}") String tablePath) {
+        super(templateUrl, tablePath);
+    }
 
     @Override
     public List<Company> parseAllCompanies() throws IOException {
-        int startPage = 1;
-        int endPage = 7521;
-        int stepPage = 20;
 
         List<Company> companies = new LinkedList<>();
         for (int currentPage = startPage; currentPage <= endPage; currentPage += stepPage) {
