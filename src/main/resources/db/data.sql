@@ -1,7 +1,7 @@
-DELETE FROM companies;
+/*DELETE FROM companies;
 DELETE FROM indicators;
 
-ALTER SEQUENCE global_seq RESTART WITH 100000;
+ALTER SEQUENCE global_seq RESTART WITH 100000;*/
 
 /*INSERT INTO companies (id, name, industry, ticker)
 VALUES (10, 'Cat Corporation', 'meal', 'CC'),

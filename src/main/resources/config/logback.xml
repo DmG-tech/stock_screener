@@ -4,8 +4,21 @@
     <!-- To enable JMX Management -->
     <jmxConfigurator/>
 
-    <appender name="file" class="ch.qos.logback.core.FileAppender">
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>log/stocks.log</file>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+            <!-- ежедневное создание файла лога -->
+            <fileNamePattern>log/stocks.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- Храним файлы логов 7 дней -->
+            <maxHistory>7</maxHistory>
+
+            <!-- Максимальный размер файлов лога 100 мегабайт -->
+            <totalSizeCap>100MB</totalSizeCap>
+        </rollingPolicy>
 
         <encoder>
             <charset>UTF-8</charset>
