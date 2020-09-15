@@ -32,36 +32,34 @@ public class InitialDataIndicatorService implements InitialDataIndicator {
     @Transactional
     @Override
     public void initializeIndicatorForAllCompanies(List<Company> companies) throws IOException {
-
         for (Company company : companies) {
-
-            String ticker = company.getTicker();
-
-            List<Indicator> indicators = indicatorParser.parseIndicatorForCompany(ticker);
-
-            checkForDuplicationAndRemoveThem(indicators);
-
-            for (Indicator indicator : indicators) {
-                int company_id = company.getId();
-                if (isCorrectData(indicator)) {
-                    indicatorRepository.save(indicator, company_id);
-                }
-            }
-            log.info("add indicators for ticker: {}", company.getTicker());
+            initializeIndicatorForCompany(company);
         }
     }
 
     @Override
     public void initializeIndicatorForCompany(Company company) throws IOException {
-        initializeIndicatorForAllCompanies(List.of(company));
+        String ticker = company.getTicker();
+
+        List<Indicator> indicators = indicatorParser.parseIndicatorForCompany(ticker);
+
+        checkForDuplicationAndRemoveThem(indicators);
+
+        for (Indicator indicator : indicators) {
+            int company_id = company.getId();
+            if (isCorrectData(indicator)) {
+                indicatorRepository.save(indicator, company_id);
+            }
+        }
+        log.info("add indicators for ticker: {}", company.getTicker());
     }
 
-    private void checkForDuplicationAndRemoveThem(List<Indicator> indicators) {
+    protected void checkForDuplicationAndRemoveThem(List<Indicator> indicators) {
         Set<Indicator> duplicates = new LinkedHashSet<>();
 
         for (int i = 0; i < indicators.size(); i++) {
             Indicator currentIndicator = indicators.get(i);
-            List<Indicator> subList = indicators.subList(i + 1, indicators.size() - 1);
+            List<Indicator> subList = indicators.subList(i + 1, indicators.size());
 
             duplicates.addAll(getDuplicates(currentIndicator, subList));
         }
