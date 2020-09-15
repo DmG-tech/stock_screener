@@ -41,6 +41,7 @@ public class FinVizIndicatorParser extends AbstractPageParser implements Indicat
 
             Indicator indicator = new Indicator();
             initializeIndicatorFields(indicator, name, value);
+            indicators.add(indicator);
         }
         log.info("parse indicators for ticker: {}", ticker);
         return indicators;
